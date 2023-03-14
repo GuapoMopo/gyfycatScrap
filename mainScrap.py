@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from dotenv import load_dotenv
 import os
+import csv
 
 load_dotenv()
 
@@ -31,7 +32,6 @@ def login():
     find('//*[@id="root"]/div/div/div/main/section/form/button').click()
 
 def navToGifs():
-
     waitAndClick('//*[@id="root"]/div/div/header/div/div[3]/div')
     waitAndClick('//*[@id="root"]/div/div/nav/section/a[1]')
     waitAndClick('//*[@id="root"]/div/div/div/main/div/div[3]/div[1]/div/div/a[3]/div')
@@ -44,13 +44,19 @@ def setSettings():
 
 def saveInformation():
     pass
-    for i in range(1, 100):
-        mainCard = '//*[@id="root"]/div/div/div/main/div/div[3]/div[3]/div/div['+str(i)+']'
-        title = mainCard+'/div[3]/div/div/div/input'
-        link = mainCard+'/div[3]/div[3]/div/div/input'
-        date = mainCard+'/div[4]/div[1]'
-        time = mainCard+'/div[4]/div[2]'
 
+    with open('output.csv', 'w', newline='') as f:
+        writer = csv.writer(f)
+        for _ in range(1, 52):
+            for j in range(2, 102):
+                mainCard = '//*[@id="root"]/div/div/div/main/div/div[3]/div[3]/div/div['+str(j)+']'
+                title = mainCard+'/div[3]/div/div/div/input'
+                link = mainCard+'/div[3]/div[3]/div/div/input'
+                date = mainCard+'/div[4]/div[1]'
+                time = mainCard+'/div[4]/div[2]'
+                
+                writer.writerow([find(title).get_attribute('value'), find(link).get_attribute('value'),find(date).text,find(time).text])
+            waitAndClick('//*[@id="root"]/div/div/div/main/div/div[3]/div[2]/div[2]/div/div[3]')
 
 
 
